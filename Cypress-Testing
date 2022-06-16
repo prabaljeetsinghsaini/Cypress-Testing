@@ -1,0 +1,79 @@
+///<reference types="cypress"/>
+
+describe('CYPRESS TESTING REPORT',()=>{
+
+
+it("Amazon",()=>{
+
+  cy.visit('https://www.amazon.in');
+  cy.url().should('contain','amazon')
+  cy.get('select[id="searchDropdownBox"]').select( "Electronics",{force: true})
+  cy.get('#twotabsearchtextbox').type("iphone 12")
+  cy.get('#nav-search-submit-button').click()
+  cy.contains('Apple iPhone 12 (64GB) - Blue').invoke('removeAttr', 'target').click()   //Remove the new page reload
+  cy.url().should('contain','iPhone')
+  cy.get('#add-to-cart-button').click()
+  cy.contains('Cart').click()
+  cy.url().should('contain','cart')
+})
+
+
+it("Bajaj",()=>{
+
+  cy.visit('https://www.bajajfinservhealth.in');
+  cy.url().should('contain','bajajfinservhealth')
+  cy.get('.css-euu24l > path').click();
+  cy.get(':nth-child(13) > .MuiButtonBase-root > .css-1lar9zo > .css-4u24ag').click()
+  cy.get('.container').scrollIntoView()
+  cy.get(':nth-child(5) > .MuiAccordionSummary-root').click()
+  cy.get('#in-clinic-consultation').click()
+  cy.get(':nth-child(1) > .css-1p6j90k > a > .css-14hwr1e > .css-5glxer > .css-1a5hr2q > h2').scrollIntoView().click()
+  cy.url().should('contain','doctor')
+})
+
+it("Travolook",()=>{
+  cy.visit('https://www.travolook.in/flights/');
+  cy.url().should('contain','travolook')
+  cy.get('#flying_from_N').click()
+  cy.get('#flying_from').type('Chandigarh')
+  cy.get('.ac_odd').click()
+  cy.get('#flying_to_N').click()
+  cy.get('#flying_to').type('Pune')
+  cy.get('.ac_over').click()
+  cy.get('#Fly_depdate_val').click()
+  cy.get('.ui-datepicker-group-first > .ui-datepicker-calendar > tbody > :nth-child(5) > :nth-child(2) > .ui-state-default').click()
+  cy.get('#searchengine_btn').click()
+  cy.url().should('contain','Result')
+})
+  
+})
+
+var nodemailer=require('nodemailer');
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  port:465,
+  host:"smtp.gmail.com",
+  secure:true,
+  auth:{
+      user: 'username',
+      pass: 'password'
+  }
+});
+let mailContent={
+  from: 'your username',
+  to: 'Reciever mail',
+  subject: '',
+  attachments: [
+      {
+          filename: 'index.html',
+          path: __dirname + '/index.html'
+      }
+  ]
+};
+transporter.sendMail(mailContent, function(error, data){
+  if(err){
+      console.log('Unable to send mail');
+  }else{
+      console.log('Email send successfully');
+  }
+});
